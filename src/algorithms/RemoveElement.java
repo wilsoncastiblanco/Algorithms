@@ -17,80 +17,30 @@ public class RemoveElement {
 
     public static void main(String[] args) {
         List<Integer> numbers = new ArrayList<>();
-        numbers.add(0);
-        System.out.println(removeElement(numbers, 0));
+        numbers.add(4);
+        numbers.add(1);
+        numbers.add(1);
+        numbers.add(2);
+        numbers.add(1);
+        numbers.add(3);
+        System.out.println(remove(numbers, 1));
     }
 
-    public static List<Integer> removeElement(List<Integer> numbers, int n) {
-        int numberToRemove = removeItem(numbers, n);
+    public static int remove(List<Integer> numbers, int n) {
 
-        if (numbers.size() > 0) {
-            while (numberToRemove != -1) {
-                numberToRemove = removeItem(numbers, n);
-            }
-        }
-
-        return numbers;
+        return numbers.size() - searchItem(numbers, n);
     }
 
-    private static int removeItem(List<Integer> numbers, int n) {
-        int numberToRemove = search(numbers, n);
-        if (numberToRemove != -1) {
-            numbers.remove(numberToRemove);
-        }
-        return numberToRemove;
-    }
+    static int counter = 0;
 
-    private static int search(List<Integer> numbers, int num) {
-        System.out.println("Hola");
-        int n = numbers.size();
-        // 1st comparison
-        if (numbers.get(n - 1) == num) {
-            return n - 1;
-        }
-
-        int backup = numbers.get(n - 1);
-        numbers.set(n - 1, num);
-
-        // no termination condition and thus
-        // no comparison
-        for (int i = 0;; i++) {
-            // this would be executed at-most n times
-            // and therefore at-most n comparisons
-            if (numbers.get(i) == num) {
-                // replace arr[n-1] with its actual element
-                // as in original 'arr[]'
-                numbers.set(n - 1, backup);
-
-                // if 'x' is found before the '(n-1)th'
-                // index, then it is present in the array
-                // final comparison
-                if (i < n - 1) {
-                    return i;
-                }
-
-                // else not present in the array
-                return -1;
-            }
-        }
-    }
-
-    public static int binarySearch(List<Integer> numbers, int num) {
-        int low = 0;
-        int high = numbers.size() - 1;
-        int mid;
-
-        while (low <= high) {
-            mid = (low + high) / 2;
-            if (numbers.get(mid) < num) {
-                low = mid + 1;
-            } else if (numbers.get(mid) > num) {
-                high = mid - 1;
+    private static int searchItem(List<Integer> numbers, int n) {
+        for (int index = 0; index < numbers.size(); index++) {
+            if (numbers.get(index) == n) {
+                counter++;
             } else {
-                return mid;
+                numbers.set(index - counter, numbers.get(index));
             }
         }
-
-        return -1;
+        return counter;
     }
 }
