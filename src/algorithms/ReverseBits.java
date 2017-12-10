@@ -12,22 +12,62 @@ package algorithms;
 public class ReverseBits {
 
     public static void main(String[] args) {
-        reverseBinary(3);
+        System.out.println(reverseBinary(2));
     }
 
     public static long reverseBinary(long n) {
 
-        StringBuilder binary = new StringBuilder();
+        long rev = 0;
 
-      
-        //1073741824 = 2
-        long reversed = (n >> 2)|(n << (32 - 2));
-        
-        System.out.println(reversed);
-        
-        System.out.println(binary.reverse().toString());
+        for (int i = 0; i < 32; i++) {
+            rev <<= 1;
+            System.out.println(rev);
+            if ((n & (1 << i)) != 0) {
+                rev |= 1;
+            }
+        }
 
-        return 0;
+        return rev;
+    }
+
+    public static void mergeSort(char[] arr, char[] aux, int low, int high) {
+        if (low < high) {
+            int middle = (low + high) / 2;
+            mergeSort(arr, aux, low, middle);
+            mergeSort(arr, aux, middle + 1, high);
+
+            merge(arr, aux, low, middle, high);
+        }
+    }
+
+    private static void merge(char[] arr, char[] aux, int low, int middle, int high) {
+
+        for (int i = low; i <= high; i++) {
+            aux[i] = arr[i];
+        }
+
+        int leftAux = low;
+        int rightAux = middle + 1;
+        int current = low;
+
+        while (leftAux <= middle && rightAux <= high) {
+            //System.err.println((aux[rightAux] + '0')+" <= "+(aux[leftAux] + '0') +" = "+ (aux[rightAux] + '0' <= aux[leftAux] + '0'));
+            if ((((int) aux[rightAux] + '0') ^ ((int) aux[leftAux] + '0')) == 0) {
+                arr[current] = aux[leftAux];
+                leftAux++;
+            } else {
+                arr[current] = aux[rightAux];
+                rightAux++;
+            }
+            current++;
+        }
+
+        int remaining = middle - leftAux;
+
+        for (int i = 0; i <= remaining; i++) {
+            arr[current + i] = aux[current + i];
+        }
+
     }
 
 }
